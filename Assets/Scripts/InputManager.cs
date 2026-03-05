@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 /// 빈 오브젝트에 부착하는 C# 스크립트입니다.
 /// Input System으로 키 입력을 받아 이벤트를 뿌립니다.
 /// </summary>
+[DefaultExecutionOrder(-99)]
 public class InputManager : MonoBehaviour
 {
     #region ─────────────────────────▶ 인스펙터 ◀─────────────────────────
@@ -23,16 +24,13 @@ public class InputManager : MonoBehaviour
     #region ─────────────────────────▶ 내부 변수 ◀─────────────────────────
     public static InputManager Ins { get; private set; }
 
-    // 싱글톤 생성 완료 시 발행
-    public static event Action OnReady;
-
     public event Action<Vector2> OnMove;
     public event Action<bool> OnRun;
     public event Action<bool> OnJump;
     public event Action<bool> OnAttack;
     public event Action<bool> OnGuard;
 
-    private bool _isReady = false;
+    public bool IsReady { get; private set; } = false;
     #endregion
 
     #region ─────────────────────────▶ 내부 메서드 ◀─────────────────────────
@@ -90,7 +88,7 @@ public class InputManager : MonoBehaviour
     // 안전하게 가입
     private void TryBind()
     {
-        if (_isReady) {
+        if (IsReady) {
             return;
         }
         // 액션 세팅 여부 확인
@@ -105,7 +103,7 @@ public class InputManager : MonoBehaviour
         // performed + canceled 모두 등록
         RegisterActions();
         // 등록 완료
-        _isReady = true;
+        IsReady = true;
         if (_log) {
             De.Print("Input Manager 바인드 완료 !");
         }
@@ -113,19 +111,19 @@ public class InputManager : MonoBehaviour
     // 안전하게 탈퇴
     private void UnBind()
     {
-        if (!_isReady) {
+        if (!IsReady) {
             return;
         }
         // 해제 작업 안하면 중복 바인딩이 누적된다
         UnRegisterActions();
         // 등록 해제
-        _isReady = false;
+        IsReady = false;
         De.Print("Input Manager 언바인드 완료 !");
     }
     // Input Manager가 활성화 / 비활성화될 경우
     private void EnableActions(bool enable)
     {
-        if (!_isReady) {
+        if (!IsReady) {
             return;
         }
         if (enable) {
@@ -234,9 +232,6 @@ public class InputManager : MonoBehaviour
         Ins = this;
         // Actions 가입 및 공지
         TryBind();
-        OnReady?.Invoke();
-        // 유니티를 껏다 키면 에러가 해결되는 걸 경험한 뒤로 느낌이 좋지 않았습니다.
-        // 강사님의 방어 코드가 과하다고 생각한 적도 있는데 모노비헤이비어조차 신뢰할 수가 없군요.
     }
 
     private void OnEnable()
