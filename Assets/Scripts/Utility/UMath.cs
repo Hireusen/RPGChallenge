@@ -8,9 +8,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// Sharpness 변수를 기준으로 지수 보간한 값(0 ~ 1)을 반환합니다.
     /// </summary>
-    /// <param name="sharpness"></param>
-    /// <param name="deltatime"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float GetSmoothT(float sharpness, float deltatime)
     {
@@ -20,9 +17,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 두 벡터의 각 요소를 비교해서 가장 작은 벡터와 가장 큰 벡터를 반환합니다.
     /// </summary>
-    /// <param name="pos1"></param>
-    /// <param name="pos2"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (Vector2 minPos, Vector2 maxPos) SortNumericSize(Vector2 pos1, Vector2 pos2)
     {
@@ -42,9 +36,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 두 벡터의 각 요소를 비교해서 가장 작은 벡터와 가장 큰 벡터를 반환합니다.
     /// </summary>
-    /// <param name="pos1"></param>
-    /// <param name="pos2"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (Vector2Int minPos, Vector2Int maxPos) SortNumericSize(Vector2Int pos1, Vector2Int pos2)
     {
@@ -64,9 +55,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 두 좌표를 비교해서 가장 작은 좌표와 가장 큰 좌표를 반환합니다.
     /// </summary>
-    /// <param name="pos1"></param>
-    /// <param name="pos2"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (float minX, float maxX, float minY, float maxY) SortNumericSize(float x1, float y1, float x2, float y2)
     {
@@ -86,11 +74,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 두 좌표를 격자 형태의 도로망에서 최단 거리를 계산하여 반환합니다.
     /// </summary>
-    /// <param name="x1"></param>
-    /// <param name="y1"></param>
-    /// <param name="x2"></param>
-    /// <param name="y2"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float GetManhattanDist(float x1, float y1, float x2, float y2)
     {
@@ -100,9 +83,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 두 좌표를 격자 형태의 도로망에서 최단 거리를 계산하여 반환합니다.
     /// </summary>
-    /// <param name="pos1"></param>
-    /// <param name="pos2"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float GetManhattanDist(Vector2 pos1, Vector2 pos2)
     {
@@ -112,11 +92,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 두 좌표를 2D 평면에서 최단 거리로 계산하여 반환합니다.
     /// </summary>
-    /// <param name="x1"></param>
-    /// <param name="y1"></param>
-    /// <param name="x2"></param>
-    /// <param name="y2"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float GetEuclideanDist(float x1, float y1, float x2, float y2)
     {
@@ -129,9 +104,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 두 좌표를 2D 평면에서 최단 거리로 계산하여 반환합니다.
     /// </summary>
-    /// <param name="pos1"></param>
-    /// <param name="pos2"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float GetEuclideanDist(Vector2 pos1, Vector2 pos2)
     {
@@ -145,10 +117,6 @@ public class UMath : MonoBehaviour
     /// 직선 이동과 대각선 이동에 동일한 점수를 부여합니다.
     /// 두 좌표를 2D 좌표계에서 최단 거리를 계산하여 반환합니다.
     /// </summary>
-    /// <param name="x1"></param>
-    /// <param name="y1"></param>
-    /// <param name="x2"></param>
-    /// <param name="y2"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float GetChebyshevDist(float x1, float y1, float x2, float y2)
     {
@@ -161,9 +129,6 @@ public class UMath : MonoBehaviour
     /// 직선 이동과 대각선 이동에 동일한 점수를 부여합니다.
     /// 두 좌표를 2D 좌표계에서 최단 거리를 계산하여 반환합니다.
     /// </summary>
-    /// <param name="pos1"></param>
-    /// <param name="pos2"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float GetChebyshevDist(Vector2 pos1, Vector2 pos2)
     {
@@ -175,7 +140,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 방향 벡터를 4가지 방향 중 하나로 변환하여 반환합니다.
     /// </summary>
-    /// <param name="direction"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 GetDirection4(Vector2 direction)
     {
@@ -208,7 +172,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 방향 벡터를 4가지 방향 중 하나로 변환하여 반환합니다.
     /// </summary>
-    /// <param name="direction"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2Int GetDirection4Int(Vector2 direction)
     {
@@ -238,8 +201,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 방향 벡터를 8가지 방향 중 하나로 변환하여 반환합니다.
     /// </summary>
-    /// <param name="direction"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2Int GetDirection8Int(Vector2 direction)
     {
@@ -257,8 +218,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 방향 벡터를 8가지 방향 중 하나로 변환하여 반환합니다.
     /// </summary>
-    /// <param name="direction"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 GetDirection8(Vector2 direction)
     {
@@ -278,8 +237,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 두 벡터 사이의 거리의 제곱을 반환합니다.
     /// </summary>
-    /// <param name="pos1"></param>
-    /// <param name="pos2"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float GetDistanceSquare(Vector2 pos1, Vector2 pos2)
     {
@@ -291,11 +248,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 두 좌표 사이의 거리의 제곱을 반환합니다.
     /// </summary>
-    /// <param name="x1"></param>
-    /// <param name="y1"></param>
-    /// <param name="x2"></param>
-    /// <param name="y2"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float GetDistanceSquare(float x1, float y1, float x2, float y2)
     {
@@ -307,9 +259,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 두 점이 거리 이내에 있는지 검사합니다.
     /// </summary>
-    /// <param name="pos1"></param>
-    /// <param name="pos2"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsWithinDistance(Vector2 pos1, Vector2 pos2, float distance)
     {
@@ -322,9 +271,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 원점을 기준으로 벡터를 회전시킵니다.
     /// </summary>
-    /// <param name="vector"></param>
-    /// <param name="radian"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 Rotate(Vector2 vector, float radian)
     {
@@ -341,10 +287,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 점이 중심점을 기준으로 회전한 좌표를 반환합니다.
     /// </summary>
-    /// <param name="center"></param>
-    /// <param name="pos"></param>
-    /// <param name="radian"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 RotatePoint(Vector2 center, Vector2 pos, float radian)
     {
@@ -378,8 +320,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// 각도를 0° 이상 360° 미만 범위로 정규화합니다.
     /// </summary>
-    /// <param name="degree"></param>
-    /// <returns></returns>
     public static float NormalizeAngle(float degree)
     {
         while (360 <= degree) degree -= 360;
@@ -390,8 +330,6 @@ public class UMath : MonoBehaviour
     /// <summary>
     /// percent 확률로 true를 반환합니다.
     /// </summary>
-    /// <param name="percent"></param>
-    /// <returns></returns>
     public static bool IsProbability(float percent)
     {
         float rand = Random.Range(0f, 100f);

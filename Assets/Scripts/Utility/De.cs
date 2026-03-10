@@ -5,7 +5,7 @@ using System.Diagnostics;
 using UnityEngine;
 
 /// <summary>
-/// 디버그 로그를 관리하는 유틸리티 클래스입니다.
+/// 디버깅 기능을 제공하는 유틸리티 클래스
 /// </summary>
 public static class De
 {
@@ -32,13 +32,17 @@ public static class De
     private static void LogInternal(string message, string file, int line, LogType type = LogType.Log, bool once = ENABLE_ONCE)
     {
         if (!ENABLE_LOG)
+        {
             return;
-        if (once) {
+        }
+        if (once)
+        {
             string key = file + line;
             if (_logHistory.Contains(key)) return;
             _logHistory.Add(key);
         }
-        switch (type) {
+        switch (type)
+        {
             case LogType.Error:
             case LogType.Assert:
             case LogType.Exception:
@@ -51,13 +55,14 @@ public static class De
                 UnityEngine.Debug.Log(message);
                 break;
         }
-        if (ENABLE_PAUSE) {
+        if (ENABLE_PAUSE)
+        {
             UnityEngine.Debug.Break();
         }
     }
     #endregion
 
-    #region ─────────────────────────▶ 외부 멤버 ◀─────────────────────────
+    #region ─────────────────────────▶ 로그 함수 ◀─────────────────────────
     /// <summary>
     /// 오브젝트가 Null 또는 Fake Null일 경우 True를 반환하고 로그를 출력합니다.
     /// </summary>
@@ -71,13 +76,17 @@ public static class De
     {
         bool isNull = false;
         // 검사
-        if (obj is UnityEngine.Object unityObj) {
+        if (obj is UnityEngine.Object unityObj)
+        {
             isNull = unityObj == null;
-        } else {
+        }
+        else
+        {
             isNull = obj == null;
         }
         // 로그
-        if (isNull && ENABLE_LOG) {
+        if (isNull && ENABLE_LOG)
+        {
             string msg = $"<color=red>[Null]</color> {objName} is Null";
             LogInternal(msg, file, line, logType);
         }
@@ -95,8 +104,10 @@ public static class De
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
-        if (condition) {
-            if (ENABLE_LOG) {
+        if (condition)
+        {
+            if (ENABLE_LOG)
+            {
                 LogInternal($"<color=red>[True]</color> {message}", file, line, logType);
             }
             return true;
@@ -115,8 +126,10 @@ public static class De
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
-        if (!condition) {
-            if (ENABLE_LOG) {
+        if (!condition)
+        {
+            if (ENABLE_LOG)
+            {
                 LogInternal($"<color=red>[False]</color> {message}", file, line, logType);
             }
             return true;
@@ -134,7 +147,24 @@ public static class De
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
-        LogInternal($"<color=cyan>[Log]</color> {message}", file, line, logType);
+        LogInternal($"<color=cyan>[log]</color> {message}", file, line, logType);
+    }
+
+    /// <summary>
+    /// 로그를 출력합니다. (log 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Log(
+        bool printLog,
+        object message,
+        LogType logType = LogType.Log,
+        [CallerFilePath] string file = "",
+        [CallerLineNumber] int line = 0)
+    {
+        if (printLog)
+        {
+            LogInternal($"<color=cyan>[log]</color> {message}", file, line, logType);
+        }
     }
 
     /// <summary>
@@ -147,16 +177,332 @@ public static class De
         [CallerFilePath] string file = "",
         [CallerLineNumber] int line = 0)
     {
-        LogInternal($"<color=cyan>[Log]</color> {message}", file, line, logType, true);
+        LogInternal($"<color=cyan>[log]</color> {message}", file, line, logType, true);
+    }
+    #endregion
+
+    #region ─────────────────────────▶ 레이 함수 ◀─────────────────────────
+    /// <summary>
+    /// 초록색 디버그 레이를 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Ray(Vector3 startPos, Vector3 dir, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawRay(startPos, dir, Color.green, duration, depthTest);
     }
 
+    /// <summary>
+    /// 디버그 레이를 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Ray(Vector3 startPos, Vector3 dir, Color color, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawRay(startPos, dir, color, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 초록색 디버그 레이를 앞으로 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void FrontRay(Vector3 startPos, float distance, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawRay(startPos, distance * Vector3.forward, Color.green, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 디버그 레이를 앞으로 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void FrontRay(Vector3 startPos, float distance, Color color, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawRay(startPos, distance * Vector3.forward, color, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 초록색 디버그 레이를 위로 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void UpRay(Vector3 startPos, float distance, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawRay(startPos, distance * Vector3.up, Color.green, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 디버그 레이를 위로 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void UpRay(Vector3 startPos, float distance, Color color, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawRay(startPos, distance * Vector3.up, color, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 초록색 디버그 레이를 아래로 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void DownRay(Vector3 startPos, float distance, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawRay(startPos, distance * Vector3.down, Color.green, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 디버그 레이를 아래로 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void DownRay(Vector3 startPos, float distance, Color color, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawRay(startPos, distance * Vector3.down, color, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 초록색 디버그 레이를 각도가 가리키는 방향으로 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void DegreeRay(Vector2 startPos, float distance, float degree, float duration = 0f, bool depthTest = true)
+    {
+        float radian = degree * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(radian);
+        float sin = Mathf.Sin(radian);
+        Vector2 dir = new Vector2(cos, sin);
+        UnityEngine.Debug.DrawRay(startPos, dir * distance, Color.green, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 디버그 레이를 각도가 가리키는 방향으로 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void DegreeRay(Vector2 startPos, float distance, float degree, Color color, float duration = 0f, bool depthTest = true)
+    {
+        float radian = degree * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(radian);
+        float sin = Mathf.Sin(radian);
+        Vector2 dir = new Vector2(cos, sin);
+        UnityEngine.Debug.DrawRay(startPos, dir * distance, color, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 초록색 디버그 라인을 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Line(Vector3 pos1, Vector3 pos2, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawLine(pos1, pos2, Color.green, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 디버그 라인을 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Line(Vector3 start, Vector3 end, Color color, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawLine(start, end, color, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 초록색 디버그 라인을 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Line(Vector2 pos1, Vector2 pos2, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawLine(pos1, pos2, Color.green, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 디버그 라인을 그립니다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Line(Vector2 start, Vector2 end, Color color, float duration = 0f, bool depthTest = true)
+    {
+        UnityEngine.Debug.DrawLine(start, end, color, duration, depthTest);
+    }
+
+    /// <summary>
+    /// 초록색 디버그 레이를 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Ray(bool drawRay, Vector3 startPos, Vector3 dir, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawRay(startPos, dir, Color.green, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 디버그 레이를 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Ray(bool drawRay, Vector3 startPos, Vector3 dir, Color color, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawRay(startPos, dir, color, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 초록색 디버그 레이를 앞으로 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void FrontRay(bool drawRay, Vector3 startPos, float distance, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawRay(startPos, distance * Vector3.forward, Color.green, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 디버그 레이를 앞으로 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void FrontRay(bool drawRay, Vector3 startPos, float distance, Color color, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawRay(startPos, distance * Vector3.forward, color, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 초록색 디버그 레이를 위로 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void UpRay(bool drawRay, Vector3 startPos, float distance, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawRay(startPos, distance * Vector3.up, Color.green, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 디버그 레이를 위로 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void UpRay(bool drawRay, Vector3 startPos, float distance, Color color, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawRay(startPos, distance * Vector3.up, color, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 초록색 디버그 레이를 아래로 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void DownRay(bool drawRay, Vector3 startPos, float distance, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawRay(startPos, distance * Vector3.down, Color.green, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 디버그 레이를 아래로 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void DownRay(bool drawRay, Vector3 startPos, float distance, Color color, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawRay(startPos, distance * Vector3.down, color, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 초록색 디버그 레이를 각도가 가리키는 방향으로 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void DegreeRay(bool drawRay, Vector2 startPos, float distance, float degree, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            float radian = degree * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(radian);
+            float sin = Mathf.Sin(radian);
+            Vector2 dir = new Vector2(cos, sin);
+            UnityEngine.Debug.DrawRay(startPos, dir * distance, Color.green, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 디버그 레이를 각도가 가리키는 방향으로 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void DegreeRay(bool drawRay, Vector2 startPos, float distance, float degree, Color color, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            float radian = degree * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(radian);
+            float sin = Mathf.Sin(radian);
+            Vector2 dir = new Vector2(cos, sin);
+            UnityEngine.Debug.DrawRay(startPos, dir * distance, color, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 초록색 디버그 라인을 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Line(bool drawRay, Vector3 pos1, Vector3 pos2, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawLine(pos1, pos2, Color.green, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 디버그 라인을 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Line(bool drawRay, Vector3 start, Vector3 end, Color color, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawLine(start, end, color, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 초록색 디버그 라인을 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Line(bool drawRay, Vector2 pos1, Vector2 pos2, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawLine(pos1, pos2, Color.green, duration, depthTest);
+        }
+    }
+
+    /// <summary>
+    /// 디버그 라인을 그립니다. (ray 변수 편의성)
+    /// </summary>
+    [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD")]
+    public static void Line(bool drawRay, Vector2 start, Vector2 end, Color color, float duration = 0f, bool depthTest = true)
+    {
+        if (drawRay)
+        {
+            UnityEngine.Debug.DrawLine(start, end, color, duration, depthTest);
+        }
+    }
+    #endregion
+
+    #region ─────────────────────────▶ GUI 함수 ◀─────────────────────────
     /// <summary>
     /// GUIStyle 변수에 접근합니다.
     /// </summary>
     public static GUIStyle RectStyle
     {
-        get {
-            if (_rectStyle == null) {
+        get
+        {
+            if (_rectStyle == null)
+            {
                 _rectStyle = new GUIStyle();
                 _rectStyle.normal.textColor = Color.black;
                 _rectStyle.alignment = TextAnchor.MiddleCenter;
@@ -176,7 +522,8 @@ public static class De
         float halfW = w * 0.5f, halfH = h * 0.5f;
         float x = 0, y = 0;
         // 가로 정렬
-        switch (where) {
+        switch (where)
+        {
             case EWhere.LeftUp:
             case EWhere.Left:
             case EWhere.LeftDown:
@@ -190,7 +537,8 @@ public static class De
                 x = halfW; break;
         }
         // 세로 정렬
-        switch (where) {
+        switch (where)
+        {
             case EWhere.LeftUp: case EWhere.Up: case EWhere.RightUp: y = 0; break;
             case EWhere.Left: case EWhere.Center: case EWhere.Right: y = 0; break; // 전체 높이 사용
             case EWhere.LeftDown: case EWhere.Down: case EWhere.RightDown: y = halfH; break;
